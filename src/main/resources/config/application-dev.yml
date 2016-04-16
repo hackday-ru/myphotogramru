@@ -70,3 +70,6 @@ jhipster:
             host: localhost
             port: 5000
             queueSize: 512
+vkontakte:
+ consumerKey: 5417613
+ consumerSecret: cHuT2M67a4u93hhecNCq

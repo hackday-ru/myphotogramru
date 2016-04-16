@@ -28,6 +28,10 @@ public class InitController {
     private Grabber instagramGrabber;
 
     @Autowired
+    @Qualifier("vkGrabber")
+    private Grabber vkGrabber;
+
+    @Autowired
     private UserService service;
 
     @Autowired
@@ -44,6 +48,7 @@ public class InitController {
             new UsernamePasswordAuthenticationToken(user, "user"));
         dropboxGrabber.grabPhotos(user);
         instagramGrabber.grabPhotos(user);
+        vkGrabber.grabPhotos(user);
         return "timeline";
     }
 }
