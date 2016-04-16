@@ -46,7 +46,7 @@ public class DropboxGrabber implements Grabber {
                 delta.entries.stream()
                         .filter(entry -> entry.metadata.isFile() && Objects.nonNull(entry.metadata.asFile().photoInfo))
                         .peek(entry -> LOGGER.debug(entry.metadata.name))
-                        .map(entry -> createPhotoFromFile(entry.metadata.asFile()))
+                        .map(entry -> createPhotoFromFile(user, entry.metadata.asFile()))
                         .forEach(photoRepository::save);
                 cursor = delta.cursor;
             } while (delta.hasMore);
@@ -57,7 +57,7 @@ public class DropboxGrabber implements Grabber {
         }
     }
 
-    private Photo createPhotoFromFile(DbxEntry.File file) {
+    private Photo createPhotoFromFile(User user, DbxEntry.File file) {
         DbxEntry.File.PhotoInfo photoInfo = file.photoInfo;
         Photo photo = new Photo();
         photo.setUrl(file.path);
@@ -73,6 +73,7 @@ public class DropboxGrabber implements Grabber {
             photo.setLatitude(location.latitude);
             photo.setLongitude(location.longitude);
         }
+        photo.setUser(user);
         return photo;
     }
 
