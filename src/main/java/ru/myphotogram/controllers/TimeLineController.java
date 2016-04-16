@@ -16,6 +16,7 @@ import ru.myphotogram.repository.AuthorityRepository;
 import ru.myphotogram.service.TimelineService;
 import ru.myphotogram.service.UserService;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,16 +37,8 @@ public class TimeLineController {
     }
 
     @RequestMapping(value = {"/", "timeline"}, method = RequestMethod.GET)
-    public String timeLine(Model model, Authentication authentication) {
-        User user = null;
-        if (authentication == null) {
-            Authority authority = new Authority();
-            authority.setName("ROLE_USER");
-            authorityRepository.save(authority);
-            user = userService.createUserInformation("user", "password", "User", "User", "1@1.1", "en");
-            SecurityContextHolder.getContext().setAuthentication(
-                    new UsernamePasswordAuthenticationToken(user, "user"));
-        }
+    public String timeLine(Model model, Authentication authentication, Principal principal) {
+        User user = userService.getUserWithAuthoritiesByLogin("user").get();
         Map<Integer, List<Photo>> photos = timelineService.photos(user);
 
         List<Photo> photosQ = new ArrayList<>();
