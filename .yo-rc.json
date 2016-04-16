@@ -1,20 +1,24 @@
 {
   "generator-jhipster": {
+    "jhipsterVersion": "3.0.0",
     "baseName": "myphotogram",
     "packageName": "ru.myphotogram",
     "packageFolder": "ru/myphotogram",
-    "authenticationType": "session",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
     "hibernateCache": "no",
     "clusteredHttpSession": "no",
     "websocket": "no",
     "databaseType": "sql",
-    "devDatabaseType": "h2Memory",
+    "devDatabaseType": "h2Disk",
     "prodDatabaseType": "postgresql",
     "searchEngine": "no",
-    "useCompass": false,
     "buildTool": "maven",
-    "frontendBuilder": "grunt",
-    "javaVersion": "8",
-    "rememberMeKey": "872da8900e149227539c7e9995033a1e5ad5747d"
+    "enableSocialSignIn": true,
+    "jwtSecretKey": "47aa9081cb49147d5c961e9ad1499739918141b7",
+    "useSass": false,
+    "applicationType": "monolith",
+    "testFrameworks": [],
+    "enableTranslation": false
   }
 }

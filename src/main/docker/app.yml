@@ -1,0 +1,15 @@
+version: '2'
+services:
+    myphotogram-app:
+        image: myphotogram
+        external_links:
+            - myphotogram-postgresql:postgresql
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod
+            - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/myphotogram
+        ports:
+            - 8080:8080
+    myphotogram-postgresql:
+        extends:
+            file: postgresql.yml
+            service: myphotogram-postgresql

@@ -1,6 +1,7 @@
 package ru.myphotogram.repository;
 
 import ru.myphotogram.domain.Authority;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

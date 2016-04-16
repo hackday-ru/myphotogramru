@@ -1,53 +1,79 @@
-server:
-    port: 8080
+# ===================================================================
+# Spring Boot configuration for the "prod" profile.
+#
+# This configuration overrides the application.yml file.
+# ===================================================================
 
-liquibase:
-    context: prod
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
 
 spring:
-    profiles:
-        active: prod
+    devtools:
+        restart:
+            enabled: false
+        livereload:
+            enabled: false
     datasource:
-        dataSourceClassName: org.postgresql.ds.PGSimpleDataSource
-        url: 
-        databaseName: myphotogram
-        serverName: localhost
+        url: jdbc:postgresql://localhost:5432/myphotogram
+        name:
         username: myphotogram
-        password: 
-
+        password:
     jpa:
-        database-platform: org.hibernate.dialect.PostgreSQL82Dialect
+        database-platform: ru.myphotogram.domain.util.FixedPostgreSQL82Dialect
         database: POSTGRESQL
-        openInView: false
         show_sql: false
-        generate-ddl: false
-        hibernate:
-            ddl-auto: none
-            naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
         properties:
             hibernate.cache.use_second_level_cache: false
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: false
-            
-            
+    mail:
+        host: localhost
+        port: 25
+        username:
+        password:
     thymeleaf:
-        mode: XHTML
         cache: true
 
-metrics:
-    jmx.enabled: true
-    spark:
-        enabled: false
-        host: localhost
-        port: 9999
-    graphite:
-        enabled: false
-        host: localhost
-        port: 2003
-        prefix: myphotogram
+liquibase:
+    contexts: prod
 
-http:
-    cache:
-        timeToLiveInDays: 31
+server:
+    port: 8080
+    compression:
+        enabled: true
+        mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json
 
+# ===================================================================
+# JHipster specific properties
+# ===================================================================
 
+jhipster:
+    http:
+        cache: # Used by the CachingHttpHeadersFilter
+            timeToLiveInDays: 1461
+    mail: # specific JHipster mail property, for standard properties see MailProperties
+        from: myphotogram@localhost
+    metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
+        jmx.enabled: true
+        spark:
+            enabled: false
+            host: localhost
+            port: 9999
+        graphite:
+            enabled: false
+            host: localhost
+            port: 2003
+            prefix: myphotogram
+        logs: # report metrics in the logs
+            enabled: false
+            reportFrequency: 60 # in seconds
+    logging:
+        logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
+            enabled: false
+            host: localhost
+            port: 5000
+            queueSize: 512

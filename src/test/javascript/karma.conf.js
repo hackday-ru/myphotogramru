@@ -4,7 +4,7 @@
 module.exports = function (config) {
     config.set({
         // base path, that will be used to resolve files and exclude
-        basePath: '../../',
+        basePath: 'src/test/javascript/'.replace(/[^/]+/g,'..'),
 
         // testing framework to use (jasmine/mocha/qunit/...)
         frameworks: ['jasmine'],
@@ -12,33 +12,38 @@ module.exports = function (config) {
         // list of files / patterns to load in the browser
         files: [
             // bower:js
-            'main/webapp/bower_components/modernizr/modernizr.js',
-            'main/webapp/bower_components/jquery/dist/jquery.js',
-            'main/webapp/bower_components/bootstrap/dist/js/bootstrap.js',
-            'main/webapp/bower_components/json3/lib/json3.js',
-            'main/webapp/bower_components/angular/angular.js',
-            'main/webapp/bower_components/angular-ui-router/release/angular-ui-router.js',
-            'main/webapp/bower_components/angular-resource/angular-resource.js',
-            'main/webapp/bower_components/angular-cookies/angular-cookies.js',
-            'main/webapp/bower_components/angular-sanitize/angular-sanitize.js',
-            'main/webapp/bower_components/angular-translate/angular-translate.js',
-            'main/webapp/bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js',
-            'main/webapp/bower_components/angular-translate-loader-partial/angular-translate-loader-partial.js',
-            'main/webapp/bower_components/angular-dynamic-locale/src/tmhDynamicLocale.js',
-            'main/webapp/bower_components/angular-local-storage/dist/angular-local-storage.js',
-            'main/webapp/bower_components/angular-cache-buster/angular-cache-buster.js',
-            'main/webapp/bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js',
-            'main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
-            'main/webapp/scripts/app/app.js',
-            'main/webapp/scripts/app/**/*.js',
-            'main/webapp/scripts/components/**/*.{js,html}',
-            'test/javascript/**/!(karma.conf).js'
+            'src/main/webapp/app/app.module.js',
+            'src/main/webapp/app/app.state.js',
+            'src/main/webapp/app/app.constants.js',
+            'src/main/webapp/app/**/*.+(js|html)',
+            'src/test/javascript/spec/helpers/module.js',
+            'src/test/javascript/spec/helpers/httpBackend.js',
+            'src/test/javascript/**/!(karma.conf).js'
         ],
 
 
         // list of files / patterns to exclude
         exclude: [],
+
+        preprocessors: {
+            './**/*.js': ['coverage']
+        },
+
+        reporters: ['dots', 'jenkins', 'coverage', 'progress'],
+
+        jenkinsReporter: {
+            
+            outputFile: 'target/test-results/karma/TESTS-results.xml'
+        },
+
+        coverageReporter: {
+            
+            dir: 'target/test-results/coverage',
+            reporters: [
+                {type: 'lcov', subdir: 'report-lcov'}
+            ]
+        },
 
         // web server port
         port: 9876,
@@ -62,6 +67,11 @@ module.exports = function (config) {
 
         // Continuous Integration mode
         // if true, it capture browsers, run tests and exit
-        singleRun: false
+        singleRun: false,
+
+        // to avoid DISCONNECTED messages when connecting to slow virtual machines
+        browserDisconnectTimeout : 10000, // default 2000
+        browserDisconnectTolerance : 1, // default 0
+        browserNoActivityTimeout : 4*60*1000 //default 10000
     });
 };

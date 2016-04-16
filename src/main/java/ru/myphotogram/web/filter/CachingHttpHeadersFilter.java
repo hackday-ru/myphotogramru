@@ -1,6 +1,6 @@
 package ru.myphotogram.web.filter;
 
-import org.springframework.core.env.Environment;
+import ru.myphotogram.config.JHipsterProperties;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
@@ -9,24 +9,23 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * This filter is used in production, to put HTTP cache headers with a long (1 month) expiration time.
- * </p>
  */
 public class CachingHttpHeadersFilter implements Filter {
 
     // We consider the last modified date is the start up time of the server
     private final static long LAST_MODIFIED = System.currentTimeMillis();
 
-    private long CACHE_TIME_TO_LIVE = TimeUnit.DAYS.toMillis(31L);
+    private long CACHE_TIME_TO_LIVE = TimeUnit.DAYS.toMillis(1461L);
 
-    private Environment env;
+    private JHipsterProperties jHipsterProperties;;
 
-    public CachingHttpHeadersFilter(Environment env) {
-           this.env = env;
+    public CachingHttpHeadersFilter(JHipsterProperties jHipsterProperties) {
+        this.jHipsterProperties = jHipsterProperties;
     }
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        CACHE_TIME_TO_LIVE = TimeUnit.DAYS.toMillis(env.getProperty("http.cache.timeToLiveInDays", Long.class, 31L));
+        CACHE_TIME_TO_LIVE = TimeUnit.DAYS.toMillis(jHipsterProperties.getHttp().getCache().getTimeToLiveInDays());
     }
 
     @Override
@@ -35,7 +34,9 @@ public class CachingHttpHeadersFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+        throws IOException, ServletException {
+
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         httpResponse.setHeader("Cache-Control", "max-age=" + CACHE_TIME_TO_LIVE + ", public");

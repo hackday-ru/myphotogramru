@@ -1,15 +1,20 @@
 package ru.myphotogram.web.rest;
 
-import ru.myphotogram.security.AuthoritiesConstants;
 import ru.myphotogram.service.AuditEventService;
-import ru.myphotogram.web.propertyeditors.LocaleDateTimeEditor;
-import org.joda.time.LocalDateTime;
-import org.springframework.boot.actuate.audit.AuditEvent;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.RolesAllowed;
+import java.time.LocalDate;
+import ru.myphotogram.web.rest.util.PaginationUtil;
+import org.springframework.boot.actuate.audit.AuditEvent;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+
+import java.net.URISyntaxException;
 import javax.inject.Inject;
 import java.util.List;
 
@@ -17,31 +22,63 @@ import java.util.List;
  * REST controller for getting the audit events.
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping(value = "/api/audits", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AuditResource {
 
-    @Inject
     private AuditEventService auditEventService;
 
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(LocalDateTime.class, new LocaleDateTimeEditor("yyyy-MM-dd", false));
+    @Inject
+    public AuditResource(AuditEventService auditEventService) {
+        this.auditEventService = auditEventService;
     }
 
-    @RequestMapping(value = "/audits/all",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @RolesAllowed(AuthoritiesConstants.ADMIN)
-    public List<AuditEvent> findAll() {
-        return auditEventService.findAll();
+    /**
+     * GET  /audits : get a page of AuditEvents.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of AuditEvents in body
+     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
+     */
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<AuditEvent>> getAll(Pageable pageable) throws URISyntaxException {
+        Page<AuditEvent> page = auditEventService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/audits");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/audits/byDates",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @RolesAllowed(AuthoritiesConstants.ADMIN)
-    public List<AuditEvent> findByDates(@RequestParam(value = "fromDate") LocalDateTime fromDate,
-                                    @RequestParam(value = "toDate") LocalDateTime toDate) {
-        return auditEventService.findByDates(fromDate, toDate);
+    /**
+     * GET  /audits : get a page of AuditEvents between the fromDate and toDate.
+     *
+     * @param fromDate the start of the time period of AuditEvents to get
+     * @param toDate the end of the time period of AuditEvents to get
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of AuditEvents in body
+     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
+     */
+
+    @RequestMapping(method = RequestMethod.GET,
+        params = {"fromDate", "toDate"})
+    public ResponseEntity<List<AuditEvent>> getByDates(
+        @RequestParam(value = "fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+        @RequestParam(value = "toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
+        Pageable pageable) throws URISyntaxException {
+
+        Page<AuditEvent> page = auditEventService.findByDates(fromDate.atTime(0, 0), toDate.atTime(23, 59), pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/audits");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /audits/:id : get an AuditEvent by id.
+     *
+     * @param id the id of the entity to get
+     * @return the ResponseEntity with status 200 (OK) and the AuditEvent in body, or status 404 (Not Found)
+     */
+    @RequestMapping(value = "/{id:.+}",
+        method = RequestMethod.GET)
+    public ResponseEntity<AuditEvent> get(@PathVariable Long id) {
+        return auditEventService.find(id)
+                .map((entity) -> new ResponseEntity<>(entity, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

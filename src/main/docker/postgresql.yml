@@ -1,0 +1,12 @@
+version: '2'
+services:
+    myphotogram-postgresql:
+        container_name: myphotogram-postgresql
+        image: postgres:9.5.1
+        # volumes:
+        #     - ~/volumes/jhipster/myphotogram/postgresql/:/var/lib/postgresql/
+        environment:
+            - POSTGRES_USER=myphotogram
+            - POSTGRES_PASSWORD=
+        ports:
+            - 5432:5432
