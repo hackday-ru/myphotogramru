@@ -34,6 +34,11 @@ ul.ribbon {
     border-radius: 4px;
 }
 
+ul.ribbon.no-border {
+  border: 0;
+  border-radius: 0;
+}
+
 .inner-ribbon-item.caption {
   text-align: center;
   padding-top: 55px;
@@ -46,6 +51,36 @@ ul.ribbon {
   background-image: url(../images/development_ribbon.png);
   background-color: #ccc;
   opacity: 50%;
+}
+
+.inner-ribbon-item-sources {
+  text-align: center;
+  padding: 4px;
+  padding-top: 55px;
+  background-color: #ccc;
+  opacity: 0.9;
+  font-size: 24pt;
+  font-weight: bold;
+  display: inline-block;
+  min-height: 150px;
+  min-width: 150px;
+  width: 150px;
+  height: 150px;
+  line-height: 1.42857143;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
+.inner-ribbon-item-sources.instagramm {
+  background-position: -2px -3px;
+  background-image: url(../images/instagramicon.jpg);
+}
+
+.inner-ribbon-item-sources.dropbox {
+  background-image: url(../images/dropbox-alternate.png);
+}
+
+.inner-ribbon-item-sources.vk {
+  background-image: url(../images/Vk-icon-150x150.png);
 }
 
 .ribbon-continer {
