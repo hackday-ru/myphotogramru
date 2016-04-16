@@ -1,15 +1,12 @@
 package ru.myphotogram.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import ru.myphotogram.domain.Authority;
 import ru.myphotogram.domain.Photo;
 import ru.myphotogram.domain.User;
 import ru.myphotogram.repository.AuthorityRepository;
@@ -21,6 +18,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 @Controller
 public class TimeLineController {
@@ -54,7 +52,7 @@ public class TimeLineController {
         photosQ1.add(getPhoto(user));
         photos.put(2015, photosQ1);
 
-        model.addAttribute("photos", photos);
+        model.addAttribute("photos", new TreeMap(photos));
         return "timeline";
 
     }
