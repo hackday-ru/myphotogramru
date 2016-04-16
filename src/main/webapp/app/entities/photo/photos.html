@@ -1,0 +1,80 @@
+<div>
+    <h2>Photos</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="photo.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span >
+                        Create new Photo
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="url"><span>Url</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="thumbnailUrl"><span>ThumbnailUrl</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="width"><span>Width</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="height"><span>Height</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="hidden"><span>Hidden</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="creationDate"><span>CreationDate</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="latitude"><span>Latitude</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="logitude"><span>Logitude</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="likes"><span>Likes</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="user.id"><span>user</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="photo in vm.photos track by photo.id">
+                    <td><a ui-sref="photo-detail({id:photo.id})">{{photo.id}}</a></td>
+                    <td>{{photo.url}}</td>
+                    <td>{{photo.thumbnailUrl}}</td>
+                    <td>{{photo.width}}</td>
+                    <td>{{photo.height}}</td>
+                    <td>{{photo.hidden}}</td>
+                    <td>{{photo.creationDate | date:'medium'}}</td>
+                    <td>{{photo.latitude}}</td>
+                    <td>{{photo.logitude}}</td>
+                    <td>{{photo.likes}}</td>
+                    <td>
+                        {{photo.user.id}}
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="photo-detail({id:photo.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-xs hidden-sm"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="photo.edit({id:photo.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-xs hidden-sm"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="photo.delete({id:photo.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-xs hidden-sm"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount"></jhi-item-count>
+    </div>
+    <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>
+</div>
