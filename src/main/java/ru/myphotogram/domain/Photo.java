@@ -2,9 +2,9 @@ package ru.myphotogram.domain;
 
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -40,13 +40,25 @@ public class Photo implements Serializable {
 
     @NotNull
     @Column(name = "creation_date", nullable = false)
-    private ZonedDateTime creationDate;
+    private LocalDate creationDate;
+
+    @NotNull
+    @Column(name = "year", nullable = false)
+    private Integer year;
+
+    @NotNull
+    @Column(name = "month", nullable = false)
+    private Integer month;
+
+    @NotNull
+    @Column(name = "day", nullable = false)
+    private Integer day;
 
     @Column(name = "latitude")
     private Double latitude;
 
-    @Column(name = "logitude")
-    private Double logitude;
+    @Column(name = "longitude")
+    private Double longitude;
 
     @Column(name = "likes")
     private Integer likes;
@@ -102,12 +114,36 @@ public class Photo implements Serializable {
         this.hidden = hidden;
     }
 
-    public ZonedDateTime getCreationDate() {
+    public LocalDate getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(ZonedDateTime creationDate) {
+    public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
+    public Integer getMonth() {
+        return month;
+    }
+
+    public void setMonth(Integer month) {
+        this.month = month;
+    }
+
+    public Integer getDay() {
+        return day;
+    }
+
+    public void setDay(Integer day) {
+        this.day = day;
     }
 
     public Double getLatitude() {
@@ -118,12 +154,12 @@ public class Photo implements Serializable {
         this.latitude = latitude;
     }
 
-    public Double getLogitude() {
-        return logitude;
+    public Double getLongitude() {
+        return longitude;
     }
 
-    public void setLogitude(Double logitude) {
-        this.logitude = logitude;
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 
     public Integer getLikes() {
@@ -172,8 +208,11 @@ public class Photo implements Serializable {
             ", height='" + height + "'" +
             ", hidden='" + hidden + "'" +
             ", creationDate='" + creationDate + "'" +
+            ", year='" + year + "'" +
+            ", month='" + month + "'" +
+            ", day='" + day + "'" +
             ", latitude='" + latitude + "'" +
-            ", logitude='" + logitude + "'" +
+            ", longitude='" + longitude + "'" +
             ", likes='" + likes + "'" +
             '}';
     }

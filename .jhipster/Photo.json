@@ -39,7 +39,28 @@
         },
         {
             "fieldName": "creationDate",
-            "fieldType": "ZonedDateTime",
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "year",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "month",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "day",
+            "fieldType": "Integer",
             "fieldValidateRules": [
                 "required"
             ]
@@ -49,7 +70,7 @@
             "fieldType": "Double"
         },
         {
-            "fieldName": "logitude",
+            "fieldName": "longitude",
             "fieldType": "Double"
         },
         {
