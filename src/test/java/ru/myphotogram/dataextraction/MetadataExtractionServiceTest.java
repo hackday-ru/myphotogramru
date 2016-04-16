@@ -1,34 +1,43 @@
 package ru.myphotogram.dataextraction;
 
-import com.drew.imaging.ImageProcessingException;
 import com.drew.lang.GeoLocation;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Mockito;
 import ru.myphotogram.dataextration.MetadataExtractionService;
-import ru.myphotogram.dataextration.impl.MetadataExtractionServiceImpl;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Date;
+
+import static org.mockito.Mockito.mock;
 
 public class MetadataExtractionServiceTest {
 
-    final InputStream inputStream = new ByteArrayInputStream("1234567".getBytes());
-    final MetadataExtractionService metadataExtractionService = new MetadataExtractionServiceImpl(inputStream);
+    private static MetadataExtractionService metadataExtractionService;
 
-    public MetadataExtractionServiceTest() throws IOException, ImageProcessingException {
+    @BeforeClass
+    public static void setup() {
+        metadataExtractionService = mock(MetadataExtractionService.class);
+        Mockito.when(metadataExtractionService.getDate())
+            .thenReturn(new Date()).thenReturn(null);
+        Mockito.when(metadataExtractionService.getGeoLocation())
+            .thenReturn(new GeoLocation(1d, 1d)).thenReturn(null);
     }
+
 
     @Test
     public void checkGetDate() {
         Date date = metadataExtractionService.getDate();
+        Assert.assertNotNull(date);
+        date = metadataExtractionService.getDate();
         Assert.assertNull(date);
     }
 
     @Test
     public void checkGetGeoLocation() {
         GeoLocation geoLocation = metadataExtractionService.getGeoLocation();
+        Assert.assertNotNull(geoLocation);
+        geoLocation = metadataExtractionService.getGeoLocation();
         Assert.assertNull(geoLocation);
     }
 }
