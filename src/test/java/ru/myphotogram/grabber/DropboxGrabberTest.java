@@ -10,6 +10,7 @@ import ru.myphotogram.domain.User;
 import ru.myphotogram.repository.PhotoRepository;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -22,7 +23,7 @@ public class DropboxGrabberTest {
     @Test
     public void grabPhotos() throws Exception {
         dropboxGrabber.grabPhotos(user);
-        verify(photoRepository).save(any(Photo.class));
+        verify(photoRepository, atLeast(1)).save(any(Photo.class));
     }
 
 }
