@@ -1,0 +1,24 @@
+{
+    "myphotogramApp": {
+        "photo" : {
+            "home": {
+                "title": "Photos",
+                "createLabel": "Créer un nouveau Photo",
+                "createOrEditLabel": "Créer ou éditer un Photo"
+            },
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Photo {{ id }} ?"
+            },
+            "detail": {
+                "title": "Photo"
+            },
+            "url": "Url",
+            "thumbnailUrl": "ThumbnailUrl",
+            "width": "Width",
+            "height": "Height",
+            "likes": "Likes",
+            "user": "user"
+        }
+    }
+}
+

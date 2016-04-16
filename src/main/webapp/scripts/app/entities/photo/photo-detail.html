@@ -1,0 +1,70 @@
+
+<div>
+    <h2><span translate="myphotogramApp.photo.detail.title">Photo</span> {{photo.id}}</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th translate="entity.detail.field">Field</th>
+                    <th translate="entity.detail.value">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <span translate="myphotogramApp.photo.url">Url</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{photo.url}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="myphotogramApp.photo.thumbnailUrl">ThumbnailUrl</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{photo.thumbnailUrl}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="myphotogramApp.photo.width">Width</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{photo.width}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="myphotogramApp.photo.height">Height</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{photo.height}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="myphotogramApp.photo.likes">Likes</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{photo.likes}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="myphotogramApp.photo.user">user</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{photo.user.id}}" readonly>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit"
+            ui-sref="photo"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+</div>

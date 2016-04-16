@@ -1,0 +1,20 @@
+{
+  "generator-jhipster": {
+    "baseName": "myphotogram",
+    "packageName": "ru.myphotogram",
+    "packageFolder": "ru/myphotogram",
+    "authenticationType": "session",
+    "hibernateCache": "no",
+    "clusteredHttpSession": "no",
+    "websocket": "no",
+    "databaseType": "sql",
+    "devDatabaseType": "h2Memory",
+    "prodDatabaseType": "postgresql",
+    "searchEngine": "no",
+    "useCompass": false,
+    "buildTool": "maven",
+    "frontendBuilder": "grunt",
+    "javaVersion": "8",
+    "rememberMeKey": "872da8900e149227539c7e9995033a1e5ad5747d"
+  }
+}

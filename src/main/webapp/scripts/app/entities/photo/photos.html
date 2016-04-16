@@ -1,0 +1,164 @@
+<div>
+
+    <h2 translate="myphotogramApp.photo.home.title">Photos</h2>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#savePhotoModal" ng-click="clear()">
+                    <span class="glyphicon glyphicon-flash"></span> <span translate="myphotogramApp.photo.home.createLabel">Create a new Photo</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="savePhotoModal" tabindex="-1" role="dialog" aria-labelledby="myPhotoLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form name="editForm" role="form" novalidate ng-submit="save()" show-validation>
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                                ng-click="clear()">&times;</button>
+                        <h4 class="modal-title" id="myPhotoLabel" translate="myphotogramApp.photo.home.createOrEditLabel">Create or edit a Photo</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>ID</label>
+                            <input type="text" class="form-control" name="id"
+                                   ng-model="photo.id" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label translate="myphotogramApp.photo.url">Url</label>
+                            <input type="text" class="form-control" name="url"
+                                   ng-model="photo.url">
+
+                            <div ng-show="editForm.url.$invalid">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label translate="myphotogramApp.photo.thumbnailUrl">ThumbnailUrl</label>
+                            <input type="text" class="form-control" name="thumbnailUrl"
+                                   ng-model="photo.thumbnailUrl">
+
+                            <div ng-show="editForm.thumbnailUrl.$invalid">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label translate="myphotogramApp.photo.width">Width</label>
+                            <input type="number" class="form-control" name="width"
+                                   ng-model="photo.width">
+
+                        </div>
+                        <div class="form-group">
+                            <label translate="myphotogramApp.photo.height">Height</label>
+                            <input type="number" class="form-control" name="height"
+                                   ng-model="photo.height">
+
+                        </div>
+                        <div class="form-group">
+                            <label translate="myphotogramApp.photo.likes">Likes</label>
+                            <input type="number" class="form-control" name="likes"
+                                   ng-model="photo.likes">
+
+                        </div>
+
+                        <div class="form-group">
+                            <label translate="myphotogramApp.photo.user">user</label>
+                            <select class="form-control" name="user" ng-model="photo.user.id" ng-options="user.id as user.id for user in users">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+                            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+                        </button>
+                        <button type="submit" ng-disabled="editForm.$invalid" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deletePhotoConfirmation">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form name="deleteForm" ng-submit="confirmDelete(photo.id)">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                                ng-click="clear()">&times;</button>
+                        <h4 class="modal-title" translate="entity.delete.title">Confirm delete operation</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p translate="myphotogramApp.photo.delete.question" translate-values="{id: '{{photo.id}}'}">Are you sure you want to delete this Photo?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+                            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+                        </button>
+                        <button type="submit" ng-disabled="deleteForm.$invalid" class="btn btn-danger">
+                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th translate="myphotogramApp.photo.url">Url</th>
+                    <th translate="myphotogramApp.photo.thumbnailUrl">ThumbnailUrl</th>
+                    <th translate="myphotogramApp.photo.width">Width</th>
+                    <th translate="myphotogramApp.photo.height">Height</th>
+                    <th translate="myphotogramApp.photo.likes">Likes</th>
+                    <th translate="myphotogramApp.photo.user">user</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="photo in photos">
+                    <td><a ui-sref="photoDetail({id:photo.id})">{{photo.id}}</a></td>
+                    <td>{{photo.url}}</td>
+                    <td>{{photo.thumbnailUrl}}</td>
+                    <td>{{photo.width}}</td>
+                    <td>{{photo.height}}</td>
+                    <td>{{photo.likes}}</td>
+                    <td>{{photo.user.id}}</td>
+                    <td>
+                        <button type="submit"
+                                ui-sref="photoDetail({id:photo.id})"
+                                class="btn btn-info btn-sm">
+                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span translate="entity.action.view"> View</span>
+                        </button>
+                        <button type="submit"
+                                ng-click="showUpdate(photo.id)"
+                                class="btn btn-primary btn-sm">
+                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span translate="entity.action.edit"> Edit</span>
+                        </button>
+                        <button type="submit"
+                                ng-click="delete(photo.id)"
+                                class="btn btn-danger btn-sm">
+                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete"> Delete</span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <nav>
+            <ul class="pager">
+                <li ng-show="links['first']" ng-click="loadPage(links['first'])"><a href="#">&lt;&lt;</a></li>
+                <li ng-show="links['prev']" ng-click="loadPage(links['prev'])"><a href="#">&lt;</a></li>
+                <li ng-show="links['next']" ng-click="loadPage(links['next'])"><a href="#">&gt;</a></li>
+                <li ng-show="links['last']" ng-click="loadPage(links['last'])"><a href="#">&gt;&gt;</a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
