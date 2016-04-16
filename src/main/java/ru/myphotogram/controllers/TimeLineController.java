@@ -25,13 +25,11 @@ public class TimeLineController {
 
     private final TimelineService timelineService;
     private final UserService userService;
-    private final AuthorityRepository authorityRepository;
 
     @Autowired
-    public TimeLineController(TimelineService timelineService, UserService userService, AuthorityRepository authorityRepository) {
+    public TimeLineController(TimelineService timelineService, UserService userService) {
         this.timelineService = timelineService;
         this.userService = userService;
-        this.authorityRepository = authorityRepository;
     }
 
     @RequestMapping(value = {"/", "timeline"}, method = RequestMethod.GET)
@@ -76,14 +74,6 @@ public class TimeLineController {
         model.addAttribute("day", day);
         model.addAttribute("photos", photos);
         return "timeline-day";
-    }
-
-    private Photo getPhoto(User user) {
-        Photo p = new Photo();
-        p.setUser(user);
-        p.setCreationDate(LocalDate.now());
-        p.setUrl("http://127.0.0.1:8080/assets/images/development_ribbon.png");
-        return p;
     }
 
 }

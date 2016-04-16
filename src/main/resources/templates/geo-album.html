@@ -18,8 +18,8 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="/timeline">Timeline</a></li>
-                    <li class="active"><a href="#">Geo-Albums</a></li>
+                    <li><a href="/timeline/">Timeline</a></li>
+                    <li class="active"><a href="/geo/">Back</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/sources">My sources</a></li>
@@ -28,21 +28,12 @@
         </div>
     </nav>
     <div>
-        <div th:each="album : ${photos.keySet()}" class="ribbon-continer">
+        <div class="ribbon-continer">
             <ul class="ribbon">
-                <li class="ribbon-item"><span th:text="${album}" class="inner-ribbon-item caption">2016</span></li>
-
-                <li th:each="photo: ${photos.get(album)}" class="ribbon-item">
+                <li th:each="photo: ${photos}" class="ribbon-item">
                     <img width="150px" height="150px"
                          th:src="${photo.url}"
                          class="img-thumbnail"/>
-                </li>
-                <li class="ribbon-item">
-                    <span class="inner-ribbon-item more">
-                        <a class="btn btn-default" th:href="@{'/geo/album/' + ${album}}">
-                            more>>
-                        </a>
-                    </span>
                 </li>
             </ul>
         </div>

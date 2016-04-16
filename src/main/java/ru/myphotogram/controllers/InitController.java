@@ -49,6 +49,6 @@ public class InitController {
         dropboxGrabber.grabPhotos(user);
         instagramGrabber.grabPhotos(user);
         vkGrabber.grabPhotos(user);
-        return "timeline";
+        return "success";
     }
 }
