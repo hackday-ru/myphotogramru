@@ -88,8 +88,11 @@
                                 height: null,
                                 hidden: false,
                                 creationDate: null,
+                                year: null,
+                                month: null,
+                                day: null,
                                 latitude: null,
-                                logitude: null,
+                                longitude: null,
                                 likes: null,
                                 id: null
                             };

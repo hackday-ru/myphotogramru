@@ -41,7 +41,19 @@
                 <constraints nullable="false" />
             </column>
             
-            <column name="creation_date" type="timestamp">
+            <column name="creation_date" type="date">
+                <constraints nullable="false" />
+            </column>
+            
+            <column name="year" type="integer">
+                <constraints nullable="false" />
+            </column>
+            
+            <column name="month" type="integer">
+                <constraints nullable="false" />
+            </column>
+            
+            <column name="day" type="integer">
                 <constraints nullable="false" />
             </column>
             
@@ -49,7 +61,7 @@
                 <constraints nullable="true" />
             </column>
             
-            <column name="logitude" type="double">
+            <column name="longitude" type="double">
                 <constraints nullable="true" />
             </column>
             
@@ -60,7 +72,6 @@
             <column name="user_id" type="bigint"/>
             <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->
         </createTable>
-        <dropDefaultValue tableName="photos" columnName="creation_date" columnDataType="datetime"/>
         
         <addForeignKeyConstraint baseColumnNames="user_id"
                                  baseTableName="photos"

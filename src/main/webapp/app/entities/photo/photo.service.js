@@ -15,11 +15,24 @@
                 method: 'GET',
                 transformResponse: function (data) {
                     data = angular.fromJson(data);
-                    data.creationDate = DateUtils.convertDateTimeFromServer(data.creationDate);
+                    data.creationDate = DateUtils.convertLocalDateFromServer(data.creationDate);
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'update': {
+                method: 'PUT',
+                transformRequest: function (data) {
+                    data.creationDate = DateUtils.convertLocalDateToServer(data.creationDate);
+                    return angular.toJson(data);
+                }
+            },
+            'save': {
+                method: 'POST',
+                transformRequest: function (data) {
+                    data.creationDate = DateUtils.convertLocalDateToServer(data.creationDate);
+                    return angular.toJson(data);
+                }
+            }
         });
     }
 })();

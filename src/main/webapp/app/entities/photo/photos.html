@@ -25,8 +25,11 @@
                     <th jh-sort-by="height"><span>Height</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="hidden"><span>Hidden</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="creationDate"><span>CreationDate</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="year"><span>Year</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="month"><span>Month</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="day"><span>Day</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="latitude"><span>Latitude</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="logitude"><span>Logitude</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="longitude"><span>Longitude</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="likes"><span>Likes</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="user.id"><span>user</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
@@ -40,9 +43,12 @@
                     <td>{{photo.width}}</td>
                     <td>{{photo.height}}</td>
                     <td>{{photo.hidden}}</td>
-                    <td>{{photo.creationDate | date:'medium'}}</td>
+                        <td>{{photo.creationDate | date:'mediumDate'}}</td>
+                    <td>{{photo.year}}</td>
+                    <td>{{photo.month}}</td>
+                    <td>{{photo.day}}</td>
                     <td>{{photo.latitude}}</td>
-                    <td>{{photo.logitude}}</td>
+                    <td>{{photo.longitude}}</td>
                     <td>{{photo.likes}}</td>
                     <td>
                         {{photo.user.id}}
