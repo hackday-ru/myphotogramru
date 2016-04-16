@@ -24,7 +24,7 @@ public class Photo implements Serializable {
     @Column(name = "url", nullable = false)
     private String url;
 
-    @Column(name = "thumbnail_url", nullable = false)
+    @Column(name = "thumbnail_url")
     private String thumbnailUrl;
 
     @Column(name = "width")
@@ -33,10 +33,10 @@ public class Photo implements Serializable {
     @Column(name = "height")
     private Integer height;
 
-    @Column(name = "hidden", nullable = false)
+    @Column(name = "hidden")
     private Boolean hidden;
 
-    @Column(name = "creation_date", nullable = false)
+    @Column(name = "creation_date")
     private LocalDate creationDate;
 
     @NotNull

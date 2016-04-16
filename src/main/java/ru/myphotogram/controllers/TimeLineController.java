@@ -43,7 +43,7 @@ public class TimeLineController {
         photosQ.add(getPhoto(user));
         photosQ.add(getPhoto(user));
         photosQ.add(getPhoto(user));
-        photos.put(2016, photosQ);
+        photos.put(1999, photosQ);
 
         List<Photo> photosQ1 = new ArrayList<>();
         photosQ1.add(getPhoto(user));
