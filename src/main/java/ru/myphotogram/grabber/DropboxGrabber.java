@@ -36,18 +36,21 @@ public class DropboxGrabber implements Grabber {
     public void grabPhotos(User user) {
         LOGGER.info("Start grabbing dropbox for {}...", user);
         DbxRequestConfig config = new DbxRequestConfig("myphotogram", "en_US");
-        DbxClientV1 clientV1 = new DbxClientV1(config, ""); //TODO get access token
+        DbxClientV1 clientV1 = new DbxClientV1(config, "1LffmceDYhAAAAAAAAAAGnq29CjJCm2jefXwEDOMv0U75AKI-ds_-KrOKCgJ1kAB");
         try {
             //TODO get user cursor and
-            DbxDelta<DbxEntry> delta = clientV1.getDelta("", true);
-            //delta.cursor; //TODO update cursor
-            while (delta.hasMore) {
+            String cursor = null;
+            DbxDelta<DbxEntry> delta;
+            do {
+                delta = clientV1.getDelta(cursor, true);
                 delta.entries.stream()
                         .filter(entry -> entry.metadata.isFile() && Objects.nonNull(entry.metadata.asFile().photoInfo))
                         .peek(entry -> LOGGER.debug(entry.metadata.name))
                         .map(entry -> createPhotoFromFile(entry.metadata.asFile()))
                         .forEach(photoRepository::save);
-            }
+                cursor = delta.cursor;
+            } while (delta.hasMore);
+            //TODO update cursor
             LOGGER.info("Grabbing dropbox for {} finished", user);
         } catch (DbxException dbe) {
             LOGGER.error("Failed to grab photos from Dropbox", dbe);
