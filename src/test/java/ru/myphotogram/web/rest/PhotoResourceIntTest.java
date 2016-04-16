@@ -1,36 +1,33 @@
 package ru.myphotogram.web.rest;
 
-import ru.myphotogram.MyphotogramApp;
-import ru.myphotogram.domain.Photo;
-import ru.myphotogram.repository.PhotoRepository;
-import ru.myphotogram.service.PhotoService;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.hamcrest.Matchers.hasItem;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import ru.myphotogram.MyphotogramApp;
+import ru.myphotogram.domain.Photo;
+import ru.myphotogram.repository.PhotoRepository;
+import ru.myphotogram.service.PhotoService;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -46,8 +43,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @IntegrationTest
 public class PhotoResourceIntTest {
 
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").withZone(ZoneId.of("Z"));
-
     private static final String DEFAULT_URL = "AAAAA";
     private static final String UPDATED_URL = "BBBBB";
     private static final String DEFAULT_THUMBNAIL_URL = "AAAAA";
@@ -62,15 +57,23 @@ public class PhotoResourceIntTest {
     private static final Boolean DEFAULT_HIDDEN = false;
     private static final Boolean UPDATED_HIDDEN = true;
 
-    private static final ZonedDateTime DEFAULT_CREATION_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneId.systemDefault());
-    private static final ZonedDateTime UPDATED_CREATION_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-    private static final String DEFAULT_CREATION_DATE_STR = dateTimeFormatter.format(DEFAULT_CREATION_DATE);
+    private static final LocalDate DEFAULT_CREATION_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_CREATION_DATE = LocalDate.now(ZoneId.systemDefault());
+
+    private static final Integer DEFAULT_YEAR = 1;
+    private static final Integer UPDATED_YEAR = 2;
+
+    private static final Integer DEFAULT_MONTH = 1;
+    private static final Integer UPDATED_MONTH = 2;
+
+    private static final Integer DEFAULT_DAY = 1;
+    private static final Integer UPDATED_DAY = 2;
 
     private static final Double DEFAULT_LATITUDE = 1D;
     private static final Double UPDATED_LATITUDE = 2D;
 
-    private static final Double DEFAULT_LOGITUDE = 1D;
-    private static final Double UPDATED_LOGITUDE = 2D;
+    private static final Double DEFAULT_LONGITUDE = 1D;
+    private static final Double UPDATED_LONGITUDE = 2D;
 
     private static final Integer DEFAULT_LIKES = 1;
     private static final Integer UPDATED_LIKES = 2;
@@ -110,8 +113,11 @@ public class PhotoResourceIntTest {
         photo.setHeight(DEFAULT_HEIGHT);
         photo.setHidden(DEFAULT_HIDDEN);
         photo.setCreationDate(DEFAULT_CREATION_DATE);
+        photo.setYear(DEFAULT_YEAR);
+        photo.setMonth(DEFAULT_MONTH);
+        photo.setDay(DEFAULT_DAY);
         photo.setLatitude(DEFAULT_LATITUDE);
-        photo.setLogitude(DEFAULT_LOGITUDE);
+        photo.setLongitude(DEFAULT_LONGITUDE);
         photo.setLikes(DEFAULT_LIKES);
     }
 
@@ -137,8 +143,11 @@ public class PhotoResourceIntTest {
         assertThat(testPhoto.getHeight()).isEqualTo(DEFAULT_HEIGHT);
         assertThat(testPhoto.isHidden()).isEqualTo(DEFAULT_HIDDEN);
         assertThat(testPhoto.getCreationDate()).isEqualTo(DEFAULT_CREATION_DATE);
+        assertThat(testPhoto.getYear()).isEqualTo(DEFAULT_YEAR);
+        assertThat(testPhoto.getMonth()).isEqualTo(DEFAULT_MONTH);
+        assertThat(testPhoto.getDay()).isEqualTo(DEFAULT_DAY);
         assertThat(testPhoto.getLatitude()).isEqualTo(DEFAULT_LATITUDE);
-        assertThat(testPhoto.getLogitude()).isEqualTo(DEFAULT_LOGITUDE);
+        assertThat(testPhoto.getLongitude()).isEqualTo(DEFAULT_LONGITUDE);
         assertThat(testPhoto.getLikes()).isEqualTo(DEFAULT_LIKES);
     }
 
@@ -216,6 +225,60 @@ public class PhotoResourceIntTest {
 
     @Test
     @Transactional
+    public void checkYearIsRequired() throws Exception {
+        int databaseSizeBeforeTest = photoRepository.findAll().size();
+        // set the field null
+        photo.setYear(null);
+
+        // Create the Photo, which fails.
+
+        restPhotoMockMvc.perform(post("/api/photos")
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(photo)))
+                .andExpect(status().isBadRequest());
+
+        List<Photo> photos = photoRepository.findAll();
+        assertThat(photos).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkMonthIsRequired() throws Exception {
+        int databaseSizeBeforeTest = photoRepository.findAll().size();
+        // set the field null
+        photo.setMonth(null);
+
+        // Create the Photo, which fails.
+
+        restPhotoMockMvc.perform(post("/api/photos")
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(photo)))
+                .andExpect(status().isBadRequest());
+
+        List<Photo> photos = photoRepository.findAll();
+        assertThat(photos).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkDayIsRequired() throws Exception {
+        int databaseSizeBeforeTest = photoRepository.findAll().size();
+        // set the field null
+        photo.setDay(null);
+
+        // Create the Photo, which fails.
+
+        restPhotoMockMvc.perform(post("/api/photos")
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(photo)))
+                .andExpect(status().isBadRequest());
+
+        List<Photo> photos = photoRepository.findAll();
+        assertThat(photos).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllPhotos() throws Exception {
         // Initialize the database
         photoRepository.saveAndFlush(photo);
@@ -230,9 +293,12 @@ public class PhotoResourceIntTest {
                 .andExpect(jsonPath("$.[*].width").value(hasItem(DEFAULT_WIDTH)))
                 .andExpect(jsonPath("$.[*].height").value(hasItem(DEFAULT_HEIGHT)))
                 .andExpect(jsonPath("$.[*].hidden").value(hasItem(DEFAULT_HIDDEN.booleanValue())))
-                .andExpect(jsonPath("$.[*].creationDate").value(hasItem(DEFAULT_CREATION_DATE_STR)))
+                .andExpect(jsonPath("$.[*].creationDate").value(hasItem(DEFAULT_CREATION_DATE.toString())))
+                .andExpect(jsonPath("$.[*].year").value(hasItem(DEFAULT_YEAR)))
+                .andExpect(jsonPath("$.[*].month").value(hasItem(DEFAULT_MONTH)))
+                .andExpect(jsonPath("$.[*].day").value(hasItem(DEFAULT_DAY)))
                 .andExpect(jsonPath("$.[*].latitude").value(hasItem(DEFAULT_LATITUDE.doubleValue())))
-                .andExpect(jsonPath("$.[*].logitude").value(hasItem(DEFAULT_LOGITUDE.doubleValue())))
+                .andExpect(jsonPath("$.[*].longitude").value(hasItem(DEFAULT_LONGITUDE.doubleValue())))
                 .andExpect(jsonPath("$.[*].likes").value(hasItem(DEFAULT_LIKES)));
     }
 
@@ -252,9 +318,12 @@ public class PhotoResourceIntTest {
             .andExpect(jsonPath("$.width").value(DEFAULT_WIDTH))
             .andExpect(jsonPath("$.height").value(DEFAULT_HEIGHT))
             .andExpect(jsonPath("$.hidden").value(DEFAULT_HIDDEN.booleanValue()))
-            .andExpect(jsonPath("$.creationDate").value(DEFAULT_CREATION_DATE_STR))
+            .andExpect(jsonPath("$.creationDate").value(DEFAULT_CREATION_DATE.toString()))
+            .andExpect(jsonPath("$.year").value(DEFAULT_YEAR))
+            .andExpect(jsonPath("$.month").value(DEFAULT_MONTH))
+            .andExpect(jsonPath("$.day").value(DEFAULT_DAY))
             .andExpect(jsonPath("$.latitude").value(DEFAULT_LATITUDE.doubleValue()))
-            .andExpect(jsonPath("$.logitude").value(DEFAULT_LOGITUDE.doubleValue()))
+            .andExpect(jsonPath("$.longitude").value(DEFAULT_LONGITUDE.doubleValue()))
             .andExpect(jsonPath("$.likes").value(DEFAULT_LIKES));
     }
 
@@ -283,8 +352,11 @@ public class PhotoResourceIntTest {
         updatedPhoto.setHeight(UPDATED_HEIGHT);
         updatedPhoto.setHidden(UPDATED_HIDDEN);
         updatedPhoto.setCreationDate(UPDATED_CREATION_DATE);
+        updatedPhoto.setYear(UPDATED_YEAR);
+        updatedPhoto.setMonth(UPDATED_MONTH);
+        updatedPhoto.setDay(UPDATED_DAY);
         updatedPhoto.setLatitude(UPDATED_LATITUDE);
-        updatedPhoto.setLogitude(UPDATED_LOGITUDE);
+        updatedPhoto.setLongitude(UPDATED_LONGITUDE);
         updatedPhoto.setLikes(UPDATED_LIKES);
 
         restPhotoMockMvc.perform(put("/api/photos")
@@ -302,8 +374,11 @@ public class PhotoResourceIntTest {
         assertThat(testPhoto.getHeight()).isEqualTo(UPDATED_HEIGHT);
         assertThat(testPhoto.isHidden()).isEqualTo(UPDATED_HIDDEN);
         assertThat(testPhoto.getCreationDate()).isEqualTo(UPDATED_CREATION_DATE);
+        assertThat(testPhoto.getYear()).isEqualTo(UPDATED_YEAR);
+        assertThat(testPhoto.getMonth()).isEqualTo(UPDATED_MONTH);
+        assertThat(testPhoto.getDay()).isEqualTo(UPDATED_DAY);
         assertThat(testPhoto.getLatitude()).isEqualTo(UPDATED_LATITUDE);
-        assertThat(testPhoto.getLogitude()).isEqualTo(UPDATED_LOGITUDE);
+        assertThat(testPhoto.getLongitude()).isEqualTo(UPDATED_LONGITUDE);
         assertThat(testPhoto.getLikes()).isEqualTo(UPDATED_LIKES);
     }
 
