@@ -18,6 +18,7 @@ import ru.myphotogram.repository.PhotoRepository;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Objects;
+import java.util.Optional;
 
 @Component
 public class DropboxGrabber implements Grabber {
@@ -33,6 +34,7 @@ public class DropboxGrabber implements Grabber {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void grabPhotos(User user) {
+        LOGGER.info("Start grabbing dropbox for {}...", user);
         DbxRequestConfig config = new DbxRequestConfig("myphotogram", "en_US");
         DbxClientV1 clientV1 = new DbxClientV1(config, ""); //TODO get access token
         try {
@@ -42,9 +44,11 @@ public class DropboxGrabber implements Grabber {
             while (delta.hasMore) {
                 delta.entries.stream()
                         .filter(entry -> entry.metadata.isFile() && Objects.nonNull(entry.metadata.asFile().photoInfo))
+                        .peek(entry -> LOGGER.debug(entry.metadata.name))
                         .map(entry -> createPhotoFromFile(entry.metadata.asFile()))
                         .forEach(photoRepository::save);
             }
+            LOGGER.info("Grabbing dropbox for {} finished", user);
         } catch (DbxException dbe) {
             LOGGER.error("Failed to grab photos from Dropbox", dbe);
         }
@@ -54,14 +58,18 @@ public class DropboxGrabber implements Grabber {
         DbxEntry.File.PhotoInfo photoInfo = file.photoInfo;
         Photo photo = new Photo();
         photo.setUrl(file.path);
-        LocalDate creationDate = photoInfo.timeTaken.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate creationDate = Optional.ofNullable(photoInfo.timeTaken)
+                .map(timeTaken -> timeTaken.toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
+                .orElse(LocalDate.now());
         photo.setCreationDate(creationDate);
         photo.setYear(creationDate.getYear());
         photo.setMonth(creationDate.getMonth().getValue());
         photo.setDay(creationDate.getDayOfMonth());
         DbxEntry.File.Location location = photoInfo.location;
-        photo.setLatitude(location.latitude);
-        photo.setLongitude(location.longitude);
+        if (Objects.nonNull(location)) {
+            photo.setLatitude(location.latitude);
+            photo.setLongitude(location.longitude);
+        }
         return photo;
     }
 
