@@ -33,4 +33,8 @@ public class TimelineService {
         List<Photo> photos = photoRepository.findPhotos(user, year, month);
         return photos.stream().collect(Collectors.groupingBy((Photo::getDay)));
     }
+
+    public List<Photo> photos(User user, int year, int month, int day) {
+        return photoRepository.findPhotos(user, year, month, day);
+    }
 }
