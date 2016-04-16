@@ -21,20 +21,31 @@ public class TimelineService {
 
     public Map<Integer, List<Photo>> photos(User user) {
         List<Photo> photos = photoRepository.findPhotos(user);
-        return photos.stream().collect(Collectors.groupingBy((Photo::getYear)));
+        Map<Integer, List<Photo>> collect = photos.stream().collect(Collectors.groupingBy((Photo::getYear)));
+        return reduce(collect);
+
     }
 
     public Map<Integer, List<Photo>> photos(User user, int year) {
         List<Photo> photos = photoRepository.findPhotos(user, year);
-        return photos.stream().collect(Collectors.groupingBy((Photo::getMonth)));
+        Map<Integer, List<Photo>> collect = photos.stream().collect(Collectors.groupingBy((Photo::getMonth)));
+        return reduce(collect);
+
     }
 
     public Map<Integer, List<Photo>> photos(User user, int year, int month) {
         List<Photo> photos = photoRepository.findPhotos(user, year, month);
-        return photos.stream().collect(Collectors.groupingBy((Photo::getDay)));
+        Map<Integer, List<Photo>> collect = photos.stream().collect(Collectors.groupingBy((Photo::getDay)));
+        return reduce(collect);
     }
 
     public List<Photo> photos(User user, int year, int month, int day) {
         return photoRepository.findPhotos(user, year, month, day);
+    }
+
+    private Map<Integer, List<Photo>> reduce(Map<Integer, List<Photo>> collect) {
+        return collect.entrySet().stream().collect(Collectors.toMap(
+            Map.Entry::getKey,
+            e -> e.getValue().stream().limit(5).collect(Collectors.toList())));
     }
 }
