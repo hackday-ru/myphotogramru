@@ -9,6 +9,8 @@ import ru.myphotogram.domain.Photo;
 import ru.myphotogram.service.TimelineService;
 
 import javax.inject.Inject;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,9 +26,30 @@ public class TimeLineController {
     @RequestMapping(value = {"/", "timeline"}, method = RequestMethod.GET)
     public String timeLine(Model model) {
         Map<Integer, List<Photo>> photos = service.photos();
+
+        List<Photo> photosQ = new ArrayList<>();
+        photosQ.add(getPhoto());
+        photosQ.add(getPhoto());
+        photosQ.add(getPhoto());
+        photos.put(2016, photosQ);
+
+        List<Photo> photosQ1 = new ArrayList<>();
+        photosQ1.add(getPhoto());
+        photosQ1.add(getPhoto());
+        photosQ1.add(getPhoto());
+        photosQ1.add(getPhoto());
+        photos.put(2015, photosQ1);
+
         model.addAttribute("photos", photos);
         return "timeline";
 
+    }
+
+    private Photo getPhoto() {
+        Photo p = new Photo();
+        p.setCreationDate(LocalDate.now());
+        p.setUrl("http://127.0.0.1:8080/assets/images/development_ribbon.png");
+        return p;
     }
 
     @RequestMapping(value = "timeline/year/{year}", method = RequestMethod.GET)

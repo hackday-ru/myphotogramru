@@ -19,17 +19,17 @@ public class TimelineService {
     PhotoRepository photoRepository;
 
     public Map<Integer, List<Photo>> photos() {
-        List<Photo> photos = photoRepository.findPhotos(null);
+        List<Photo> photos = photoRepository.findPhotos();
         return photos.stream().collect(Collectors.groupingBy((Photo::getYear)));
     }
 
     public Map<Integer, List<Photo>> photos(int year) {
-        List<Photo> photos = photoRepository.findPhotos(null, year);
+        List<Photo> photos = photoRepository.findPhotos(year);
         return photos.stream().collect(Collectors.groupingBy((Photo::getMonth)));
     }
 
     public Map<Integer, List<Photo>> photos(int year, int month) {
-        List<Photo> photos = photoRepository.findPhotos(null, year, month);
+        List<Photo> photos = photoRepository.findPhotos(year, month);
         return photos.stream().collect(Collectors.groupingBy((Photo::getDay)));
     }
 }
