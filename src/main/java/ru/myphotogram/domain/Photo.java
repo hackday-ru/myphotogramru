@@ -24,7 +24,6 @@ public class Photo implements Serializable {
     @Column(name = "url", nullable = false)
     private String url;
 
-    @NotNull
     @Column(name = "thumbnail_url", nullable = false)
     private String thumbnailUrl;
 
@@ -34,11 +33,9 @@ public class Photo implements Serializable {
     @Column(name = "height")
     private Integer height;
 
-    @NotNull
     @Column(name = "hidden", nullable = false)
     private Boolean hidden;
 
-    @NotNull
     @Column(name = "creation_date", nullable = false)
     private LocalDate creationDate;
 
