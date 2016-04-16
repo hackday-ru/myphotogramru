@@ -9,8 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import ru.myphotogram.domain.Authority;
 import ru.myphotogram.domain.Photo;
 import ru.myphotogram.domain.User;
+import ru.myphotogram.repository.AuthorityRepository;
 import ru.myphotogram.service.TimelineService;
 import ru.myphotogram.service.UserService;
 
@@ -24,17 +26,22 @@ public class TimeLineController {
 
     private final TimelineService timelineService;
     private final UserService userService;
+    private final AuthorityRepository authorityRepository;
 
     @Autowired
-    public TimeLineController(TimelineService timelineService, UserService userService) {
+    public TimeLineController(TimelineService timelineService, UserService userService, AuthorityRepository authorityRepository) {
         this.timelineService = timelineService;
         this.userService = userService;
+        this.authorityRepository = authorityRepository;
     }
 
     @RequestMapping(value = {"/", "timeline"}, method = RequestMethod.GET)
     public String timeLine(Model model, Authentication authentication) {
         User user = null;
-        if (authentication.getPrincipal() == null) {
+        if (authentication == null) {
+            Authority authority = new Authority();
+            authority.setName("ROLE_USER");
+            authorityRepository.save(authority);
             user = userService.createUserInformation("user", "password", "User", "User", "1@1.1", "en");
             SecurityContextHolder.getContext().setAuthentication(
                     new UsernamePasswordAuthenticationToken(user, "user"));
