@@ -24,6 +24,10 @@ public class InitController {
     private Grabber dropboxGrabber;
 
     @Autowired
+    @Qualifier("instagramGrabber")
+    private Grabber instagramGrabber;
+
+    @Autowired
     private UserService service;
 
     @Autowired
@@ -39,6 +43,7 @@ public class InitController {
         SecurityContextHolder.getContext().setAuthentication(
             new UsernamePasswordAuthenticationToken(user, "user"));
         dropboxGrabber.grabPhotos(user);
+        instagramGrabber.grabPhotos(user);
         return "timeline";
     }
 }

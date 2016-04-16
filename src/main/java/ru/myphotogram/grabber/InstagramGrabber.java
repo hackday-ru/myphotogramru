@@ -7,6 +7,7 @@ import org.json.JSONTokener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.myphotogram.domain.Photo;
@@ -24,6 +25,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Optional;
 
+@Component
 public class InstagramGrabber implements Grabber{
 
     private static final String API_URL = "https://api.instagram.com/v1";
@@ -87,7 +89,7 @@ public class InstagramGrabber implements Grabber{
         photo.setThumbnailUrl(jsonObject.getJSONObject("images").getJSONObject("thumbnail").getString("url"));
         photo.setUrl(jsonObject.getJSONObject("images").getJSONObject("standard_resolution").getString("url"));
         LocalDate creationDate = Optional.ofNullable(jsonObject.getString("created_time"))
-            .map(timeTaken -> new Timestamp(Long.valueOf(timeTaken)).toLocalDateTime().toLocalDate())
+            .map(timeTaken -> new Timestamp(Long.valueOf(timeTaken)*1000).toLocalDateTime().toLocalDate())
             .orElse(LocalDate.now());
         photo.setCreationDate(creationDate);
         photo.setYear(creationDate.getYear());
