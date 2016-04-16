@@ -2,6 +2,7 @@ package ru.myphotogram.service;
 
 import org.springframework.stereotype.Service;
 import ru.myphotogram.domain.Photo;
+import ru.myphotogram.domain.User;
 import ru.myphotogram.repository.PhotoRepository;
 
 import javax.inject.Inject;
@@ -18,18 +19,18 @@ public class TimelineService {
     @Inject
     PhotoRepository photoRepository;
 
-    public Map<Integer, List<Photo>> photos() {
-        List<Photo> photos = photoRepository.findPhotos();
+    public Map<Integer, List<Photo>> photos(User user) {
+        List<Photo> photos = photoRepository.findPhotos(user);
         return photos.stream().collect(Collectors.groupingBy((Photo::getYear)));
     }
 
-    public Map<Integer, List<Photo>> photos(int year) {
-        List<Photo> photos = photoRepository.findPhotos(year);
+    public Map<Integer, List<Photo>> photos(User user, int year) {
+        List<Photo> photos = photoRepository.findPhotos(user, year);
         return photos.stream().collect(Collectors.groupingBy((Photo::getMonth)));
     }
 
-    public Map<Integer, List<Photo>> photos(int year, int month) {
-        List<Photo> photos = photoRepository.findPhotos(year, month);
+    public Map<Integer, List<Photo>> photos(User user, int year, int month) {
+        List<Photo> photos = photoRepository.findPhotos(user, year, month);
         return photos.stream().collect(Collectors.groupingBy((Photo::getDay)));
     }
 }
