@@ -15,10 +15,7 @@ import ru.myphotogram.service.UserService;
 
 import java.security.Principal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 @Controller
 public class TimeLineController {
@@ -52,7 +49,10 @@ public class TimeLineController {
         photosQ1.add(getPhoto(user));
         photos.put(2015, photosQ1);
 
-        model.addAttribute("photos", new TreeMap(photos));
+        Comparator<Integer> c = (o1, o2) -> -o1.compareTo(o2);
+        TreeMap treeMap = new TreeMap(c);
+        treeMap.putAll(photos);
+        model.addAttribute("photos", treeMap);
         return "timeline";
 
     }
