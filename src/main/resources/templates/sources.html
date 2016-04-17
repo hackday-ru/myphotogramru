@@ -35,8 +35,9 @@
             <ul class="ribbon no-border">
                 <li class="ribbon-item"><span class="inner-ribbon-item-sources dropbox">&nbsp;</span></li>
                 <li class="ribbon-item"><span class="inner-ribbon-item-sources vk">&nbsp;</span></li>
-                <li th:if="${!hasToken}" class="ribbon-item"><span class="inner-ribbon-item-sources instagramm">
-                    <a class="btn btn-default" href="/instagram/signin">Add...</a></span>
+                <li class="ribbon-item"><span class="inner-ribbon-item-sources instagramm">
+                    <a th:if="${!hasToken}" class="btn btn-default" href="/instagram/signin">Add...</a>
+                    <a th:if="${hasToken}" class="btn btn-default" href="/instagram/signout">Disconnect...</a></span>
                 </li>
             </ul>
         </div>

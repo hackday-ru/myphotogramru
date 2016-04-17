@@ -40,5 +40,10 @@ public class InstagramController {
         instagramGrabber.grabPhotos(repository.findOneByEmail("1@1.1").get());
         return new RedirectView("/timeline");
     }
+    @RequestMapping(path = "instagram/signout")
+    public RedirectView finishAuth() {
+        instagramGrabber.setToken(null);
+        return new RedirectView("/timeline");
+    }
 
 }
