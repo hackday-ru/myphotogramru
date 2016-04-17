@@ -61,7 +61,11 @@ public class VKGrabber implements Grabber {
 
     private Photo createPhotoFromMap(Map<String, Object> file, User user) {
         Photo photo = new Photo();
-        photo.setUrl((String) file.get("src"));
+        String url = (String)Optional.ofNullable(file.get("src_xxxbig"))
+            .orElse(file.get("src_xxbig"));
+        url = Optional.ofNullable(url).orElse((String) file.get("src_xbig"));
+        url = Optional.ofNullable(url).orElse((String) file.get("src"));
+        photo.setUrl(url);
         photo.setThumbnailUrl((String) file.get("src"));
         LocalDate creationDate = Optional.ofNullable(file.get("creationDate")).map(l -> LocalDate.ofEpochDay(Long.parseLong((String) l)))
             .orElse(LocalDate.now());
