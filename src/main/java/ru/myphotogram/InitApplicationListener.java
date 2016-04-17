@@ -19,9 +19,9 @@ import ru.myphotogram.service.UserService;
 @Component
 public class InitApplicationListener {
 
-    @Autowired
-    @Qualifier("dropboxGrabber")
-    private Grabber dropboxGrabber;
+//    @Autowired
+//    @Qualifier("dropboxGrabber")
+//    private Grabber dropboxGrabber;
 
     @Autowired
     @Qualifier("instagramGrabber")
@@ -45,7 +45,7 @@ public class InitApplicationListener {
         User user = service.createUserInformation("user", "password", "User", "User", "1@1.1", "en");
         SecurityContextHolder.getContext().setAuthentication(
             new UsernamePasswordAuthenticationToken(user, "user"));
-        dropboxGrabber.grabPhotos(user);
+//        dropboxGrabber.grabPhotos(user);
         instagramGrabber.grabPhotos(user);
         vkGrabber.grabPhotos(user);
     }

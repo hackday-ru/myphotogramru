@@ -44,7 +44,8 @@
 
                 <li th:each="photo: ${photos.get(year)}" class="ribbon-item">
                     <a class="fancybox" th:href="${photo.url}">
-                        <img width="150px" height="150px" th:src="${photo.thumbnailUrl}" class="gram img-thumbnail"/>
+                        <img width="150px" height="150px" th:src="${photo.thumbnailUrl}"
+                             th:class="@{${photo.grabberId} + ' gram img-thumbnail'}"/>
                     </a>
                 </li>
                 <li class="ribbon-item">
@@ -69,6 +70,7 @@
     $(document).ready(function() {
 		$('.fancybox').fancybox();
     });
+
 
 </script>
 </body>
