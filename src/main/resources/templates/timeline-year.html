@@ -33,9 +33,7 @@
                 <li class="ribbon-item"><span th:text="${month}" class="inner-ribbon-item caption">April</span></li>
 
                 <li th:each="photo: ${photos.get(month)}" class="ribbon-item">
-                    <img width="150px" height="150px"
-                         th:src="${photo.url}"
-                         class="img-thumbnail"/>
+                    <img width="150px" height="150px" th:src="${photo.url}" class="gram img-thumbnail"/>
                 </li>
                 <li class="ribbon-item">
                     <span class="inner-ribbon-item more">
