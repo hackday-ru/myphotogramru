@@ -70,6 +70,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "reset_date", nullable = true)
     private ZonedDateTime resetDate = null;
 
+    @Column(name = "dropbox_cursor")
+    private String dropboxCursor = null;
+
     @JsonIgnore
     @ManyToMany
     @JoinTable(
@@ -174,6 +177,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.authorities = authorities;
     }
 
+    public String getDropboxCursor() {
+        return dropboxCursor;
+    }
+
+    public void setDropboxCursor(String dropboxCursor) {
+        this.dropboxCursor = dropboxCursor;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -206,6 +217,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
             ", email='" + email + '\'' +
             ", activated='" + activated + '\'' +
             ", langKey='" + langKey + '\'' +
+            ", dropbox_cursor='" + dropboxCursor + '\'' +
             ", activationKey='" + activationKey + '\'' +
             "}";
     }
