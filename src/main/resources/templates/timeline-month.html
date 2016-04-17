@@ -25,6 +25,10 @@
                 <ul class="nav navbar-nav">
                     <li class="active"><a th:href="@{'/timeline/year/' + ${year}}">Back</a></li>
                     <li><a href="/geo">Geo-Albums</a></li>
+                    <li><a href="/favs">
+                        <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
+                        Favorite moments
+                    </a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/sources">My sources</a></li>
@@ -39,7 +43,7 @@
 
                 <li th:each="photo: ${photos.get(day)}" class="ribbon-item">
                     <a class="fancybox" th:href="${photo.url}">
-                        <img width="150px" height="150px" th:src="${photo.thumbnailUrl}" class="gram img-thumbnail"/>
+                        <img width="150px" height="150px" th:src="${photo.thumbnailUrl}" th:class="@{${photo.grabberId} + ' gram img-thumbnail'}"/>
                     </a>
                 </li>
                 <li class="ribbon-item">
