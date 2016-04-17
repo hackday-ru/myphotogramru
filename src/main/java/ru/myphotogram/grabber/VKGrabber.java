@@ -21,6 +21,7 @@ import java.util.Optional;
 @Component("vkGrabber")
 public class VKGrabber implements Grabber {
 
+    private final String grabberId = "vk";
     private static final Logger LOGGER = LoggerFactory.getLogger(VKGrabber.class);
     private final PhotoRepository photoRepository;
 
@@ -74,6 +75,7 @@ public class VKGrabber implements Grabber {
         photo.setMonth(creationDate.getMonth().getValue());
         photo.setDay(creationDate.getDayOfMonth());
         photo.setUser(user);
+        photo.setGrabberId(grabberId);
         Map likes = (Map) file.get("likes");
         photo.setLikes((Integer) likes.get("count"));
         return photo;

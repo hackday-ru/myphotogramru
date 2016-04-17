@@ -60,6 +60,9 @@ public class Photo implements Serializable {
     @Column(name = "likes")
     private Integer likes;
 
+    @Column(name = "grabberId")
+    private String grabberId;
+
     @ManyToOne
     private User user;
 
@@ -173,6 +176,14 @@ public class Photo implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getGrabberId() {
+        return grabberId;
+    }
+
+    public void setGrabberId(String grabberId) {
+        this.grabberId = grabberId;
     }
 
     @Override

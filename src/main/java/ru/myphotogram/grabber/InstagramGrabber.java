@@ -28,6 +28,7 @@ import java.util.Optional;
 @Component
 public class InstagramGrabber implements Grabber{
 
+    private final String grabberId = "instagram";
     private static final String API_URL = "https://api.instagram.com/v1";
     private static final String IMAGES_URL = API_URL+"/users/self/media/recent/";
     private static final Logger LOGGER = LoggerFactory.getLogger(InstagramGrabber.class);
@@ -120,6 +121,7 @@ public class InstagramGrabber implements Grabber{
             //TODO set location if returns not null
         }
         photo.setUser(user);
+        photo.setGrabberId(grabberId);
         return photo;
     }
 }

@@ -23,6 +23,8 @@ import java.util.Optional;
 @Component
 public class DropboxGrabber implements Grabber {
 
+    private final String grabberId = "dropbox";
+
     private static final Logger LOGGER = LoggerFactory.getLogger(DropboxGrabber.class);
     private final PhotoRepository photoRepository;
 
@@ -85,6 +87,7 @@ public class DropboxGrabber implements Grabber {
             photo.setLongitude(location.longitude);
         }
         photo.setUser(user);
+        photo.setGrabberId(grabberId);
         return photo;
     }
 
