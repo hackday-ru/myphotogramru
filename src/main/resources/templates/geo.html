@@ -33,7 +33,7 @@
                 <li class="ribbon-item"><span th:text="${album}" class="inner-ribbon-item caption">2016</span></li>
 
                 <li th:each="photo: ${photos.get(album)}" class="ribbon-item">
-                    <img width="150px" height="150px" th:src="${photo.url}" class="gram img-thumbnail"/>
+                    <img width="150px" height="150px" th:src="${photo.thumbnailUrl}" class="gram img-thumbnail"/>
                 </li>
                 <li class="ribbon-item">
                     <span class="inner-ribbon-item more">

@@ -46,7 +46,7 @@ public class InitController {
         User user = service.createUserInformation("user", "password", "User", "User", "1@1.1", "en");
         SecurityContextHolder.getContext().setAuthentication(
             new UsernamePasswordAuthenticationToken(user, "user"));
-        dropboxGrabber.grabPhotos(user);
+//        dropboxGrabber.grabPhotos(user);
         instagramGrabber.grabPhotos(user);
         vkGrabber.grabPhotos(user);
         return "success";

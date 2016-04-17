@@ -31,7 +31,9 @@
         <div class="ribbon-continer">
             <ul class="ribbon">
                 <li th:each="photo: ${photos}" class="ribbon-item">
-                    <img width="150px" height="150px" th:src="${photo.url}" class="gram img-thumbnail"/>
+                    <a class="fancy-image" th:href="${photo.url}">
+                        <img width="150px" height="150px" th:src="${photo.thumbnailUrl}" class="gram img-thumbnail"/>
+                    </a>
                 </li>
             </ul>
         </div>

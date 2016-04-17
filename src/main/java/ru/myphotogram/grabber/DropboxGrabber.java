@@ -44,10 +44,10 @@ public class DropboxGrabber implements Grabber {
             do {
                 delta = clientV1.getDelta(cursor, true);
                 delta.entries.stream()
-                        .filter(entry -> entry.metadata.isFile() && Objects.nonNull(entry.metadata.asFile().photoInfo))
-                        .peek(entry -> LOGGER.debug(entry.metadata.name))
-                        .map(entry -> createPhotoFromFile(user, entry.metadata.asFile()))
-                        .forEach(photoRepository::save);
+                    .filter(entry -> entry.metadata.isFile() && Objects.nonNull(entry.metadata.asFile().photoInfo))
+                    .peek(entry -> LOGGER.debug(entry.metadata.name))
+                    .map(entry -> createPhotoFromFile(user, entry.metadata.asFile()))
+                    .forEach(photoRepository::save);
                 cursor = delta.cursor;
             } while (delta.hasMore);
             //TODO update cursor
@@ -60,10 +60,11 @@ public class DropboxGrabber implements Grabber {
     private Photo createPhotoFromFile(User user, DbxEntry.File file) {
         DbxEntry.File.PhotoInfo photoInfo = file.photoInfo;
         Photo photo = new Photo();
-        photo.setUrl(file.path);
+        photo.setUrl("/dropbox" + file.path);
+        photo.setThumbnailUrl("/dropbox/thumbnail" + file.path);
         LocalDate creationDate = Optional.ofNullable(photoInfo.timeTaken)
-                .map(timeTaken -> timeTaken.toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
-                .orElse(LocalDate.now());
+            .map(timeTaken -> timeTaken.toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
+            .orElse(LocalDate.now());
         photo.setCreationDate(creationDate);
         photo.setYear(creationDate.getYear());
         photo.setMonth(creationDate.getMonth().getValue());
