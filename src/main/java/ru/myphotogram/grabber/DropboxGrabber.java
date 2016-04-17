@@ -60,7 +60,7 @@ public class DropboxGrabber implements Grabber {
     private Photo createPhotoFromFile(User user, DbxEntry.File file) {
         DbxEntry.File.PhotoInfo photoInfo = file.photoInfo;
         Photo photo = new Photo();
-        photo.setUrl("/dropbox" + file.path);
+        photo.setUrl("/dropbox/img" + file.path);
         photo.setThumbnailUrl("/dropbox/thumbnail" + file.path);
         LocalDate creationDate = Optional.ofNullable(photoInfo.timeTaken)
             .map(timeTaken -> timeTaken.toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
