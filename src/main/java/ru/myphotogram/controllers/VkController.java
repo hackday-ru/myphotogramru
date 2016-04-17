@@ -28,7 +28,7 @@ public class VkController {
             .fromUri("https://oauth.vk.com/authorize")
             .queryParam("client_id", "5417613")
             .queryParam("client_secret", "cHuT2M67a4u93hhecNCq")
-            .queryParam("redirect_uri", "http://localhost:8080/vkontakte/getphotos")
+            .queryParam("redirect_uri", "https://myphotogramru.herokuapp.com/vkontakte/getphotos")
             .queryParam("scope", "photos email")
             .queryParam("display", "page")
             .queryParam("state", "test")
@@ -44,7 +44,7 @@ public class VkController {
                 .fromUri("https://oauth.vk.com/access_token")
                 .queryParam("client_id", "5417613")
                 .queryParam("client_secret", "cHuT2M67a4u93hhecNCq")
-                .queryParam("redirect_uri", "http://localhost:8080/vkontakte/getphotos")
+                .queryParam("redirect_uri", "https://myphotogramru.herokuapp.com/vkontakte/getphotos")
                 .queryParam("code", code)
                 .build().toString()
         );

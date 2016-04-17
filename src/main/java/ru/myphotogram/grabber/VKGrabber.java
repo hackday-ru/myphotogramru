@@ -49,11 +49,16 @@ public class VKGrabber implements Grabber {
             .forEach(m -> photoRepository.save(createPhotoFromMap(m, user)));
     }
 
+    @Override
+    public void setToken(String token) {
+
+    }
+
     private Photo createPhotoFromMap(Map<String, Object> file, User user) {
         Photo photo = new Photo();
-        photo.setUrl((String) file.get("src_xxxbig"));
+        photo.setUrl((String) file.get("src"));
         photo.setThumbnailUrl((String) file.get("src"));
-        LocalDate creationDate = Optional.ofNullable(file.get("file.get")).map(l -> LocalDate.ofEpochDay(Long.parseLong((String) l)))
+        LocalDate creationDate = Optional.ofNullable(file.get("creationDate")).map(l -> LocalDate.ofEpochDay(Long.parseLong((String) l)))
             .orElse(LocalDate.now());
         photo.setCreationDate(creationDate);
         photo.setYear(creationDate.getYear());

@@ -32,6 +32,7 @@ public class InstagramGrabber implements Grabber{
     private static final String IMAGES_URL = API_URL+"/users/self/media/recent/";
     private static final Logger LOGGER = LoggerFactory.getLogger(InstagramGrabber.class);
     private final PhotoRepository photoRepository;
+    private String token;
 
     @Autowired
     public InstagramGrabber(PhotoRepository photoRepository) {
@@ -41,9 +42,13 @@ public class InstagramGrabber implements Grabber{
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void grabPhotos(User user) {
+        if (token == null) {
+            LOGGER.info("Instagram unauthorized skipping", user);
+            return;
+        }
         LOGGER.info("Start grabbing instagram for {}...", user);
         try {
-            URL url = new URL(IMAGES_URL + "?access_token=" + "3140901725.1677ed0.c6fa81dfc749426b8c74f154156a51e1");
+            URL url = new URL(IMAGES_URL + "?access_token=" + token);
             //TODO pass real token
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
@@ -58,6 +63,11 @@ public class InstagramGrabber implements Grabber{
         } catch(Exception e){
             LOGGER.error("Instagram",e);
         }
+    }
+
+    @Override
+    public void setToken(String token) {
+        this.token = token;
     }
 
     private String streamToString(InputStream is) throws IOException {
@@ -95,9 +105,10 @@ public class InstagramGrabber implements Grabber{
         photo.setYear(creationDate.getYear());
         photo.setMonth(creationDate.getMonth().getValue());
         photo.setDay(creationDate.getDayOfMonth());
-        String likes = jsonObject.getString("likes");
-        if (Objects.nonNull(likes)) {
-            photo.setLikes(Integer.valueOf(likes));
+        JSONObject likes = jsonObject.getJSONObject("likes");
+        String count = likes.getString("count");
+        if (Objects.nonNull(count)) {
+            photo.setLikes(Integer.valueOf(count));
         }
         String location = jsonObject.getString("location");
         if (Objects.nonNull(location)) {

@@ -57,6 +57,11 @@ public class DropboxGrabber implements Grabber {
         }
     }
 
+    @Override
+    public void setToken(String token) {
+
+    }
+
     private Photo createPhotoFromFile(User user, DbxEntry.File file) {
         DbxEntry.File.PhotoInfo photoInfo = file.photoInfo;
         Photo photo = new Photo();

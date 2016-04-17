@@ -20,6 +20,17 @@
             <id>spring-milestones</id>
             <url>http://repo.spring.io/milestone</url>
         </repository>
+        <repository>
+            <id>oss.snapshots</id>
+            <name>OSS Sonatype Snapshot Repository</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
@@ -388,6 +399,11 @@
             <artifactId>metadata-extractor</artifactId>
             <version>2.9.0</version>
         </dependency>
+            <dependency>
+                <groupId>com.sachinhandiekar</groupId>
+                <artifactId>jInstagram</artifactId>
+                <version>1.1.7-SNAPSHOT</version>
+            </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
     </dependencies>
     <build>
