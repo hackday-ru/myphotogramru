@@ -46,8 +46,6 @@ public class DropboxController {
     public void dropbox(@PathVariable("path") String path, HttpServletRequest request,
                         HttpServletResponse response) throws IOException, DbxException {
         String url = "/" + path + ".jpg";
-        DbxRequestConfig config = new DbxRequestConfig("myphotogram", "en_US");
-        DbxClientV1 clientV1 = new DbxClientV1(config, "1LffmceDYhAAAAAAAAAAGnq29CjJCm2jefXwEDOMv0U75AKI-ds_-KrOKCgJ1kAB");
 
         try (OutputStream os = response.getOutputStream()) {
             DbxEntry.File file = clientV1.getFile(url, null, os);
