@@ -1,12 +1,12 @@
-package ru.myphotogram.controllers;
+package ru.myphotogram;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.stereotype.Component;
 import ru.myphotogram.domain.Authority;
 import ru.myphotogram.domain.User;
 import ru.myphotogram.grabber.Grabber;
@@ -14,10 +14,10 @@ import ru.myphotogram.repository.AuthorityRepository;
 import ru.myphotogram.service.UserService;
 
 /**
- * Created by Eugene on 16.04.16.
+ * Created by Eugene on 17.04.16.
  */
-@Controller
-public class InitController {
+@Component
+public class InitApplicationListener {
 
     @Autowired
     @Qualifier("dropboxGrabber")
@@ -37,9 +37,8 @@ public class InitController {
     @Autowired
     private AuthorityRepository authorityRepository;
 
-
-    @RequestMapping(value = "init", method = RequestMethod.GET)
-    public String init() {
+    @EventListener
+    public void handleContextRefresh(ContextRefreshedEvent event) {
         Authority authority = new Authority();
         authority.setName("ROLE_USER");
         authorityRepository.save(authority);
@@ -49,6 +48,5 @@ public class InitController {
         dropboxGrabber.grabPhotos(user);
         instagramGrabber.grabPhotos(user);
         vkGrabber.grabPhotos(user);
-        return "success";
     }
 }

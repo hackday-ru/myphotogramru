@@ -86,3 +86,6 @@ ul.ribbon.no-border {
   margin-top: 10px;
   min-width: 1075px;
 }
+.gram.img-thumbnail {
+    height: 150px;
+}

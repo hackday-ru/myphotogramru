@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width"/>
     <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css"/>
     <link rel="stylesheet" href="/assets/styles/main.css"/>
+    <link rel="stylesheet" href="/bower_components/fancyBox/source/jquery.fancybox.css" media="screen"/>
 </head>
 <body>
 <div class="container">
@@ -33,9 +34,9 @@
                 <li class="ribbon-item"><span th:text="${year}" class="inner-ribbon-item caption">2016</span></li>
 
                 <li th:each="photo: ${photos.get(year)}" class="ribbon-item">
-                    <img width="150px" height="150px"
-                         th:src="${photo.url}"
-                         class="img-thumbnail"/>
+                    <a class="fancybox" th:href="${photo.url}">
+                        <img width="150px" height="150px" th:src="${photo.thumbnailUrl}" class="gram img-thumbnail"/>
+                    </a>
                 </li>
                 <li class="ribbon-item">
                     <span class="inner-ribbon-item more">
@@ -54,5 +55,11 @@
 <script src="/bower_components/jquery/dist/jquery.js"></script>
 <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
 <script src="/bower_components/json3/lib/json3.js"></script>
+<script src="/bower_components/fancyBox/source/jquery.fancybox.js"></script>
+<script>
+    $(document).ready(function() {
+		$('.fancybox').fancybox();
+    });
+</script>
 </body>
 </html>
