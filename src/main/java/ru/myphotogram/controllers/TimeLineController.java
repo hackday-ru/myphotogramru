@@ -9,12 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ru.myphotogram.domain.Photo;
 import ru.myphotogram.domain.User;
-import ru.myphotogram.repository.AuthorityRepository;
 import ru.myphotogram.service.TimelineService;
 import ru.myphotogram.service.UserService;
 
 import java.security.Principal;
-import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.TextStyle;
 import java.util.*;
@@ -25,6 +23,8 @@ public class TimeLineController {
 
     private final TimelineService timelineService;
     private final UserService userService;
+    private Comparator<Integer> c = (o1, o2) -> -o1.compareTo(o2);
+    private Comparator<String> c2 = (o1, o2) -> -o1.compareTo(o2);
 
     @Autowired
     public TimeLineController(TimelineService timelineService, UserService userService) {
@@ -37,7 +37,6 @@ public class TimeLineController {
         User user = userService.getUserWithAuthoritiesByLogin("user").get();
         Map<Integer, List<Photo>> photos = timelineService.photos(user);
 
-        Comparator<Integer> c = (o1, o2) -> -o1.compareTo(o2);
         TreeMap treeMap = new TreeMap(c);
         treeMap.putAll(photos);
         model.addAttribute("photos", treeMap);
@@ -48,10 +47,23 @@ public class TimeLineController {
     @RequestMapping(value = "timeline/year/{year}", method = RequestMethod.GET)
     public String timeLineYear(@PathVariable("year") int year, Model model) {
         User user = userService.getUserWithAuthoritiesByLogin("user").get();
-        Map<Integer, List<Photo>> photos = timelineService.photos(user, year);
-        Map<String, List<Photo>> map = photos.entrySet().stream().collect(Collectors.toMap((e) -> Month.of(e.getKey()).getDisplayName(TextStyle.FULL, Locale.US), Map.Entry::getValue));
-        model.addAttribute("year", year);
+
+        TreeMap<Integer, List<Photo>> treeMap = new TreeMap(c);
+        treeMap.putAll(timelineService.photos(user, year));
+
+        Map<String, List<Photo>> map = treeMap.entrySet().stream().collect(
+            Collectors.toMap(
+                (e) -> Month.of(e.getKey()).getDisplayName(TextStyle.FULL, Locale.US),
+                Map.Entry::getValue,
+                (u, v) -> {
+                    throw new IllegalStateException(String.format("Duplicate key %s", u));
+                },
+                TreeMap::new)
+        );
+
         model.addAttribute("photos", map);
+        model.addAttribute("year", year);
+
         return "timeline-year";
     }
 
@@ -59,9 +71,13 @@ public class TimeLineController {
     public String timeLineMonth(@PathVariable("year") int year, @PathVariable("month") String month, Model model) {
         User user = userService.getUserWithAuthoritiesByLogin("user").get();
         Map<Integer, List<Photo>> photos = timelineService.photos(user, year, Month.valueOf(month.toUpperCase()).getValue());
+
+        TreeMap treeMap = new TreeMap(c);
+        treeMap.putAll(photos);
+
         model.addAttribute("year", year);
         model.addAttribute("month", month);
-        model.addAttribute("photos", photos);
+        model.addAttribute("photos", treeMap);
         return "timeline-month";
     }
 
