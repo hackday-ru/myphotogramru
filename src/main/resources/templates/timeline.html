@@ -15,16 +15,24 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="/">My Photogram</a>
+                <a class="navbar-brand" href="/">
+                    <span class="glyphicon glyphicon-camera" aria-hidden="true"></span>
+                    My Photogram
+                </a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="#">Timeline</a></li>
                     <li><a href="/geo">Geo-Albums</a></li>
-                    <li><a href="/favs">Favorite moments</a></li>
+                    <li><a href="/favs">
+                        <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
+                        Favorite moments
+                    </a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/sources">My sources</a></li>
+                    <li><a href="/sources">
+                        My sources
+                    </a></li>
                 </ul>
             </div>
         </div>
@@ -61,6 +69,7 @@
     $(document).ready(function() {
 		$('.fancybox').fancybox();
     });
+
 </script>
 </body>
 </html>

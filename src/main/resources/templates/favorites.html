@@ -16,11 +16,16 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="/">My Photogram</a>
+                <a class="navbar-brand" href="/">
+                    <span class="glyphicon glyphicon-camera" aria-hidden="true"></span>
+                    My Photogram
+                </a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="/favs">Favorite moments</a></li>
+                    <li><a href="/timeline">Timeline</a></li>
+                    <li><a href="/geo">Geo-Albums</a></li>
+                    <li class="active"><a href="#">Favorite moments</a></li>
                 </ul>
             </div>
         </div>
@@ -29,9 +34,10 @@
         <div class="ribbon-continer">
             <ul class="ribbon">
                 <li th:each="month, status: ${favs.keySet()}" class="ribbon-item">
-                    <span th:text="${month}"></span>
+                    <h2 th:text="${month}"></h2>
                     <a class="fancybox" th:href="${favs.get(month).url}">
-                        <img width="150px" height="150px" th:src="${favs.get(month).thumbnailUrl}" class="gram img-thumbnail"/>
+                        <img width="150px" height="150px" th:src="${favs.get(month).thumbnailUrl}"
+                             class="gram img-thumbnail"/>
                     </a>
                 </li>
             </ul>
@@ -43,7 +49,8 @@
 <script src="/bower_components/modernizr/modernizr.js"></script>
 <script src="/bower_components/jquery/dist/jquery.js"></script>
 <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
-<script src="/bower_components/json3/lib/json3.js"></script><script src="/bower_components/fancyBox/source/jquery.fancybox.js"></script>
+<script src="/bower_components/json3/lib/json3.js"></script>
+<script src="/bower_components/fancyBox/source/jquery.fancybox.js"></script>
 <script>
     $(document).ready(function() {
 		$('.fancybox').fancybox();
