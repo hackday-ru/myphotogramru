@@ -21,7 +21,7 @@ public class ServiceConfiguration {
         return new InstagramAuthService()
             .apiKey("ed5fd2c0d59142a4afcbe4aedb5bc86d")
             .apiSecret("8cae5a9c2e13430d9b262d9b74bd336e")
-            .callback("https://myphotogramru.herokuapp.com/instagram/finish-auth")
+            .callback("http://www.myphotogram.ru/instagram/finish-auth")
             .build();
     }
 
