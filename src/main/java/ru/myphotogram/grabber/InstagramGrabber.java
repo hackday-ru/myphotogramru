@@ -95,6 +95,10 @@ public class InstagramGrabber implements Grabber{
         photo.setYear(creationDate.getYear());
         photo.setMonth(creationDate.getMonth().getValue());
         photo.setDay(creationDate.getDayOfMonth());
+        String likes = jsonObject.getString("likes");
+        if (Objects.nonNull(likes)) {
+            photo.setLikes(Integer.valueOf(likes));
+        }
         String location = jsonObject.getString("location");
         if (Objects.nonNull(location)) {
             //TODO set location if returns not null
