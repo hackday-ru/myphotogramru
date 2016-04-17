@@ -20,8 +20,7 @@ public class FavsService {
     PhotoRepository photoRepository;
 
     public Map<String, Photo> photos(User user) {
-        List<Photo> photos = photoRepository.findPhotos(user, 2016);
-        return reduce(photos);
+        return reduce(photoRepository.findPhotos(user, 2016));
     }
 
     private Map<String, Photo> reduce(List<Photo> photos) {
