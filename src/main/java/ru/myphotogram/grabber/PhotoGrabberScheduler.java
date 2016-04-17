@@ -15,20 +15,32 @@ public class PhotoGrabberScheduler {
 
     private final UserService userService;
     private final Grabber dropboxGrabber;
+    private final Grabber instagramGrabber;
 
     @Autowired
-    public PhotoGrabberScheduler(UserService userService, Grabber dropboxGrabber) {
+    public PhotoGrabberScheduler(UserService userService, Grabber dropboxGrabber, Grabber instagramGrabber) {
         this.userService = userService;
         this.dropboxGrabber = dropboxGrabber;
+        this.instagramGrabber = instagramGrabber;
     }
 
     @Transactional
     @Scheduled(fixedDelay = 30000)
-    public void grabPhotos() {
+    public void grabDbPhotos() {
         userService.getUserWithAuthoritiesByLogin("user").ifPresent(user -> {
-            LOGGER.info("Start scheduled grabber...");
+            LOGGER.info("Start scheduled DBX grabber...");
             dropboxGrabber.grabPhotos(user);
-            LOGGER.info("Scheduled grabber finished");
+            LOGGER.info("Scheduled grabber DBX finished");
+        });
+    }
+
+    @Transactional
+    @Scheduled(fixedDelay = 30000)
+    public void updateInstaLikes() {
+        userService.getUserWithAuthoritiesByLogin("user").ifPresent(user -> {
+            LOGGER.info("Start scheduled Instagram grabber...");
+            instagramGrabber.grabPhotos(user);
+            LOGGER.info("Scheduled grabber Instagram finished");
         });
     }
 

@@ -59,7 +59,13 @@ public class InstagramGrabber implements Grabber{
             JSONObject jsonObj = (JSONObject) new JSONTokener(response).nextValue();
             JSONArray jsonArray = jsonObj.getJSONArray("data");
             for(int i = 0; i < jsonArray.length(); i++){
-                photoRepository.save(createPhotoFromJSON((JSONObject) jsonArray.get(i), user));
+                Photo photo = createPhotoFromJSON((JSONObject) jsonArray.get(i), user);
+                Optional<Photo> existentPhoto = photoRepository.findByUrl(photo.getUrl());
+                if (existentPhoto.isPresent()) {
+                    existentPhoto.get().setLikes(photo.getLikes());
+                } else {
+                    photoRepository.save(createPhotoFromJSON((JSONObject) jsonArray.get(i), user));
+                }
             }
         } catch(Exception e){
             LOGGER.error("Instagram",e);

@@ -7,6 +7,7 @@ import ru.myphotogram.domain.Photo;
 import ru.myphotogram.domain.User;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Spring Data JPA repository for the Photo entity.
@@ -24,5 +25,7 @@ public interface PhotoRepository extends JpaRepository<Photo, Long> {
 
     @Query("select photo from Photo photo where photo.user = :user and photo.year = :year and month = :month and day = :day")
     List<Photo> findPhotos(@Param("user") User user, @Param("year") int year, @Param("month") int month, @Param("day") int day);
+
+    Optional<Photo> findByUrl(String url);
 
 }
