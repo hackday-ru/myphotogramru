@@ -1,10 +1,6 @@
 package ru.myphotogram.grabber;
 
-import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
-import com.dropbox.core.v1.DbxClientV1;
-import com.dropbox.core.v1.DbxDelta;
-import com.dropbox.core.v1.DbxEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +14,8 @@ import ru.myphotogram.domain.User;
 import ru.myphotogram.repository.PhotoRepository;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.temporal.TemporalAccessor;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 @Component("vkGrabber")
@@ -51,22 +44,24 @@ public class VKGrabber implements Grabber {
         Map<String, List<Object>> vkArray = restTemplate.getForObject(url, Map.class);
         vkArray.get("response").stream()
             .filter(m -> m instanceof Map)
-            .map(m -> (Map<String,String>)m)
-            .peek(m -> LOGGER.debug(m.get("src")))
+            .map(m -> (Map<String, Object>) m)
+            .peek(m -> LOGGER.debug((String) m.get("src")))
             .forEach(m -> photoRepository.save(createPhotoFromMap(m, user)));
     }
 
-    private Photo createPhotoFromMap(Map<String, String> file, User user) {
+    private Photo createPhotoFromMap(Map<String, Object> file, User user) {
         Photo photo = new Photo();
-        photo.setUrl(file.get("src_xxxbig"));
-        photo.setThumbnailUrl(file.get("src"));
-        LocalDate creationDate = Optional.ofNullable(file.get("file.get")).map(l -> LocalDate.ofEpochDay(Long.parseLong(l)))
+        photo.setUrl((String) file.get("src_xxxbig"));
+        photo.setThumbnailUrl((String) file.get("src"));
+        LocalDate creationDate = Optional.ofNullable(file.get("file.get")).map(l -> LocalDate.ofEpochDay(Long.parseLong((String) l)))
             .orElse(LocalDate.now());
         photo.setCreationDate(creationDate);
         photo.setYear(creationDate.getYear());
         photo.setMonth(creationDate.getMonth().getValue());
         photo.setDay(creationDate.getDayOfMonth());
         photo.setUser(user);
+        Map likes = (Map) file.get("likes");
+        photo.setLikes((Integer) likes.get("count"));
         return photo;
     }
 
