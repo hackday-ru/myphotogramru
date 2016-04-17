@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width"/>
     <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css"/>
     <link rel="stylesheet" href="/assets/styles/main.css"/>
+    <link rel="stylesheet" href="/bower_components/fancyBox/source/jquery.fancybox.css" media="screen"/>
+
 </head>
 <body>
 <div class="container">
@@ -31,7 +33,7 @@
         <div class="ribbon-continer">
             <ul class="ribbon">
                 <li th:each="photo: ${photos}" class="ribbon-item">
-                    <a class="fancy-image" th:href="${photo.url}">
+                    <a class="fancybox" th:href="${photo.url}">
                         <img width="150px" height="150px" th:src="${photo.thumbnailUrl}" class="gram img-thumbnail"/>
                     </a>
                 </li>
@@ -45,5 +47,12 @@
 <script src="/bower_components/jquery/dist/jquery.js"></script>
 <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
 <script src="/bower_components/json3/lib/json3.js"></script>
+<script src="/bower_components/fancyBox/source/jquery.fancybox.js"></script>
+<script>
+    $(document).ready(function() {
+		$('.fancybox').fancybox();
+    });
+</script>
+
 </body>
 </html>
