@@ -6,5 +6,6 @@ public interface Grabber {
 
     void grabPhotos(User user);
     void setToken(String token);
+    boolean hasToken();
 
 }

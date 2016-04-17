@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -32,8 +32,8 @@
             <ul class="ribbon no-border">
                 <li class="ribbon-item"><span class="inner-ribbon-item-sources dropbox">&nbsp;</span></li>
                 <li class="ribbon-item"><span class="inner-ribbon-item-sources vk">&nbsp;</span></li>
-                <li class="ribbon-item"><span class="inner-ribbon-item-sources instagramm">
-                    <a class="btn btn-default" href="#">Add...</a></span>
+                <li th:if="${!hasToken}" class="ribbon-item"><span class="inner-ribbon-item-sources instagramm">
+                    <a class="btn btn-default" href="/instagram/signin">Add...</a></span>
                 </li>
             </ul>
         </div>

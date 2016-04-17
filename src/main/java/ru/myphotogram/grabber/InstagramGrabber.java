@@ -70,6 +70,11 @@ public class InstagramGrabber implements Grabber{
         this.token = token;
     }
 
+    @Override
+    public boolean hasToken() {
+        return Objects.nonNull(token);
+    }
+
     private String streamToString(InputStream is) throws IOException {
         String str = "";
         if (is != null) {

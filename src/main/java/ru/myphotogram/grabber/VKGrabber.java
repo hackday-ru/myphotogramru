@@ -54,6 +54,11 @@ public class VKGrabber implements Grabber {
 
     }
 
+    @Override
+    public boolean hasToken() {
+        return true;
+    }
+
     private Photo createPhotoFromMap(Map<String, Object> file, User user) {
         Photo photo = new Photo();
         photo.setUrl((String) file.get("src"));
