@@ -38,15 +38,13 @@ public class InstagramController {
     public RedirectView finishAuth(@RequestParam String code) {
         instagramGrabber.setToken(instagramService.getAccessToken(new Verifier(code)).getToken());
         instagramGrabber.grabPhotos(repository.findOneByEmail("1@1.1").get());
-        RedirectView redirectView = new RedirectView("/timeline");
-        redirectView.setContextRelative(true);
+        RedirectView redirectView = new RedirectView("http://www.myphotogram.ru/timeline");
         return redirectView;
     }
     @RequestMapping(path = "instagram/signout")
     public RedirectView finishAuth() {
         instagramGrabber.setToken(null);
-        RedirectView redirectView = new RedirectView("/timeline");
-        redirectView.setContextRelative(true);
+        RedirectView redirectView = new RedirectView("http://www.myphotogram.ru/timeline");
         return redirectView;
     }
 
